@@ -7,7 +7,7 @@ Class Config
 
 		$this->sql_host = "localhost";
 		$this->sql_username = "root";
-		$this->sql_password = "makerhacker"; 
+		$this->sql_password = ""; 
 		$this->realm_database = "atome_realm";
 		$this->game_database = "";
 		$this->world_database = "";
