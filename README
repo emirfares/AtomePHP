@@ -1,0 +1,9 @@
++==========================================+
+|   ____________                           |
+|   ___    |_  /_____________ ________     |
+|   __  /| |  __/  __ \_  __ `__ \  _ \    |
+|   _  ___ / /_ / /_/ /  / / / / /  __/    |
+|   /_/  |_\__/ \____//_/ /_/ /_/\___/ PHP |
++==========================================+        
+
+AtomePHP est un émulateur DOFUS 1.29.1 entièrement écrit en PHP, totalement développé par l'équipe, from scratch (n'est basé sur aucun autre émulateur), le but d'AtomePHP est d'ouvrir une voie aux développeurs WEB et de leurs donner la possibilité de s'orienter et s'approfondir dans le monde de l'émulation sans avoir a changer leurs langage favoris
