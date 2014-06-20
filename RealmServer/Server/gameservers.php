@@ -33,7 +33,7 @@ Class GameServers
 
 	public function ServerExists($id)
 	{
-		foreach($this->$serverlist as $serv)
+		foreach($this->serverlist as $serv)
 		{
 			if ($serv->id == $id)
 			{
