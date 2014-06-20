@@ -3,7 +3,7 @@ Class RealmClient
 {
 	public $id = -1;
 	public $account_exists = false;
-	public $username,$password,$account_name;
+	public $username,$password,$account_name,$secretQuestion;
 	public $banned = false;
 
 	public $gmlevel,$points,$originalpoints;
@@ -29,6 +29,7 @@ Class RealmClient
 			$this->account_name = $data['pseudo'];
 			$this->gmlevel = $data['gmlevel'];
 			$this->points = $data['points'];
+			$this->secretQuestion = $data['question'];
 			$this->banned = ($data['banned']>0) ? true : false;
 			$this->lastip = $data['lastIP'];
 			$this->lastconnection = $data['last_time'];
