@@ -18,10 +18,9 @@ Class GameServers
 		$this->loadservers();
 	}
 
-	protected function loadservers ()
-	{
-		global $dbrealm;
-		foreach($dbrealm->query("SELECT * FROM servers_list") as $data)
+	private function loadservers (){
+		$db = DatabaseConnection::connect("realm");
+		foreach($db->query("SELECT * FROM servers_list") as $data)
 		{
 			$serv = new Server;
 			$serv->id = $data['id'];
@@ -34,7 +33,7 @@ Class GameServers
 
 	public function ServerExists($id)
 	{
-		foreach($this->serverlist as $serv)
+		foreach($this->$serverlist as $serv)
 		{
 			if ($serv->id == $id)
 			{
@@ -46,7 +45,7 @@ Class GameServers
 
 	public function GetServ ($id)
 	{
-		foreach($this->serverlist as $serv)
+		foreach($this->$serverlist as $serv)
 		{
 			if ($serv->id == $id)
 			{
@@ -58,9 +57,9 @@ Class GameServers
 
 	public function ChangeState ($servid,$state)
 	{
-		if (GameServers::ServerExists($servid))
+		if ($this->ServerExists($servid))
 		{
-			$serv = GameServers::GetServ($servid);
+			$serv = $this->GetServ($servid);
 			$serv->state = $state;
 		}
 	}

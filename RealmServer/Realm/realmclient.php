@@ -17,8 +17,7 @@ Class RealmClient
 	}
 
 	protected function loadclient ($account){
-		global $dbrealm;
-		$sql = $dbrealm->prepare("SELECT * FROM accounts WHERE username=?");
+		$sql = Client::$dbrealm->prepare("SELECT * FROM player_accounts WHERE username=?");
 		$sql->execute(array($account)); 
 		$count = $sql->RowCount();
 		if ($count == 1) {
@@ -33,7 +32,7 @@ Class RealmClient
 			$this->banned = ($data['banned']>0) ? true : false;
 			$this->lastip = $data['lastIP'];
 			$this->lastconnection = $data['last_time'];
-			($data['characters'] != "") ? $this->characters = $this->ParseCharacter($data['characters']): $this->characters = array();
+			($data['characters'] != "") ? $this->characters = $this->parseCharacter($data['characters']): $this->characters = array();
 		}
 		else
 		{
@@ -42,8 +41,7 @@ Class RealmClient
 
 	}
 
-	public function ParseCharacter ($packet)
-	{
+	private function parseCharacter ($packet){
 		$tdata = explode("|",$packet);
 		$char = array();
 		foreach ($tdata as $data)
