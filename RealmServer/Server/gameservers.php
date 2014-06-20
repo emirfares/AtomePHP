@@ -45,7 +45,7 @@ Class GameServers
 
 	public function GetServ ($id)
 	{
-		foreach($this->$serverlist as $serv)
+		foreach($this->serverlist as $serv)
 		{
 			if ($serv->id == $id)
 			{
