@@ -1,6 +1,5 @@
 <?php
-Class Server
-{
+Class Server{
 	public $id = 1;
 	public $ip = "127.0.0.1";
 	public $state = 0;
@@ -8,13 +7,9 @@ Class Server
 	public $port = "5555";
 	public $system_port = "3333";
 }
-Class GameServers
-{
+Class GameServers{
 	public $serverlist = array();
-
-
-	function __construct()
-	{
+	function __construct(){
 		$this->loadservers();
 	}
 
@@ -31,8 +26,7 @@ Class GameServers
 		}
 	}
 
-	public function ServerExists($id)
-	{
+	public function ServerExists($id){
 		foreach($this->serverlist as $serv)
 		{
 			if ($serv->id == $id)
@@ -43,8 +37,7 @@ Class GameServers
 		return false;
 	}
 
-	public function GetServ ($id)
-	{
+	public function GetServ ($id){
 		foreach($this->serverlist as $serv)
 		{
 			if ($serv->id == $id)
@@ -55,8 +48,7 @@ Class GameServers
 		
 	}
 
-	public function ChangeState ($servid,$state)
-	{
+	public function ChangeState ($servid,$state){
 		if ($this->ServerExists($servid))
 		{
 			$serv = $this->GetServ($servid);
@@ -64,24 +56,14 @@ Class GameServers
 		}
 	}
 
-	public function ParsePacket ()
-	{
+	public function ParsePacket (){
 		$packet ="";
 		$first = true;
-		foreach($this->serverlist as $serv)
-		{
-			if ($first)
-			{
-				$first = false;
-			}
-			else
-			{
-				$packet .= "|";
-			}
+		foreach($this->serverlist as $serv){
+			($first) ? $first = false : $packet .= "|";
 			$packet .= $serv->id.";".$serv->state.";".(75 * $serv->id).";1";
 		}
 		return $packet;
 	}
 }
-
 $GameServs = new GameServers;
