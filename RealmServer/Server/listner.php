@@ -57,9 +57,9 @@
 			@result		void
 		*/
 		public function disconnect (){
-			socket_close($this->socket);
 			print_info("Client Disconnected");
-			$this->shutdown();
+			//$this->kill();
+			//TODO : find a way to kill thread without fucking the socket
 		}
 
 		/*!	@function	run
@@ -67,17 +67,16 @@
 			@result		void
 		*/
 		public function run (){
-			self::$dbrealm = new PDO ("mysql:host={$this->config->sql_host};dbname=".$this->config->realm_database,$this->config->sql_username,$this->config->sql_password);
+			if (self::$dbrealm === null) {
+				self::$dbrealm = new PDO ("mysql:host={$this->config->sql_host};dbname=".$this->config->realm_database,$this->config->sql_username,$this->config->sql_password);
+			}
 			print_info('New Client Connected');
 			$this->state = 'version';
 			$this->send ('HC'.$this->key);
 			$buf = '';
 			do {
 				$buffer = socket_read($this->socket, 1024);
-				if (empty($buffer)){
-					$this->disconnect();
-				}
-				var_dump($buffer);
+				
 				$buffer = (str_replace(chr(10),"",$buffer));
  				//checking receved packets
 			 	for ($i=0; $i < strlen($buffer); $i++) { 
@@ -92,6 +91,9 @@
 			    	}  	
 				}
 			} while($buffer != '');
+			if (empty($buffer)){
+					$this->disconnect();
+				}
 		}
 
 		/*!	@function	parsePacket
@@ -267,10 +269,18 @@
 
 	$clients = array();
 	$server = socket_create_listen($config->realm_port) or print_error("Cannot start listner on port {$config->realm_port}",true); 
-	
 	print_info("Server Listning on port {$config->realm_port}");
-	
-	while(($client = socket_accept($server))){
-		$clients[]=new Client($client);
-	}
+
+	do{
+			
+		$client = socket_accept($server);
+		//$client = socket_accept($server);
+
+		array_push($clients, $tc = new Client($client));
+
+		if (in_array($tc, $clients)){
+			$key = array_search($tc, $clients);
+			unset($clients[$key]); //Lazy mode : Delete the client after disconnection. TODO : make this shit better
+		}
+	}while($client);
 ?>
