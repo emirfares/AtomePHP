@@ -1,5 +1,6 @@
 <?php
-	//error_reporting(E_ALL);
+
+	error_reporting(E_ALL);
 	$start = memory_get_usage();
 	require_once('RealmServer/config.php');
 	require_once('Extra/functions.php');
