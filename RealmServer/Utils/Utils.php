@@ -1,7 +1,6 @@
 <?php
-    $chars = explode(" ",implode(" ",range('a','z'))." ".implode(" ",range('A','Z'))." ".implode(" ",range('0','9'))." - _");
-    function RandomKey (){
-    	global $chars;
+   function RandomKey (){
+    	 $chars = explode(" ",implode(" ",range('a','z'))." ".implode(" ",range('A','Z'))." ".implode(" ",range('0','9'))." - _");
     	$key = "";
 
     	for ($i=1; $i <= count($chars) ; $i++) { 
@@ -10,7 +9,7 @@
     	return $key;
     }
     function CryptPass($pass,$key){
-        global $chars;
+         $chars = explode(" ",implode(" ",range('a','z'))." ".implode(" ",range('A','Z'))." ".implode(" ",range('0','9'))." - _");
         $l1 = $l2= $l3= $l4= $l5=0 ; 
         $v1 = $v2 = "";
         $l7 = "1";
