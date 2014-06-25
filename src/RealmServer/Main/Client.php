@@ -22,7 +22,7 @@ class Client extends Worker
 
 		$this->__set('config', $config);
 		$this->__set('socket', $socket);
-		$this->__set('key', Crypt\Random::generateStr());
+		$this->__set('key', Crypt\Random::generateKey());
 		socket_getpeername($this->socket, $ip);
 		$this->__set('ip', $ip);
 		$this->__set('hostname', gethostbyaddr($this->ip));
