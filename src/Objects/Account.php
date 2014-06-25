@@ -1,40 +1,40 @@
 <?php
 
-namespace Objects;
+	namespace Objects;
 
-use Ext\Bilbon\ORM\ActiveRecord as ActiveRecord;
+	use Ext\Bilbon\ORM\ActiveRecord as ActiveRecord;
 
-class Account extends ActiveRecord
-{
-	public static $table = 'player_accounts';
-	public static $storage = 'realm';
-
-	public function __construct(array $account_infirmations, $em)
+	class Account extends ActiveRecord
 	{
-		$account_infirmations['characters'] = $account_infirmations['characters'] != null ? $this->parseCharacters($account_infirmations['characters']) : array();
-		$account_infirmations['is_banned'] = $account_infirmations['is_banned'] > 0 ? true : false;
+		public static $table = 'player_accounts';
+		public static $storage = 'realm';
 
-		parent::__construct($account_infirmations, $em);
-	}
-
-	private function parseCharacters($characters)
-	{
-		$array_characters = array();
-
-		if (strpos($characters, ',') !== false)
+		public function __construct(array $account_informations, $em)
 		{
-			$d = explode(',', $characters);
+			$account_informations['characters'] = $account_informations['characters'] != null ? $this->parseCharacters($account_informations['characters']) : array();
+			$account_informations['is_banned'] = $account_informations['is_banned'] > 0 ? true : false;
 
-			if (!array_key_exists($d[1], $array_characters))
-			{
-				$array_characters[$d[1]] = array();			
-			}
-
-			array_push($array_characters[$d[1]], $d[0]);
+			parent::__construct($account_informations, $em);
 		}
 
-		return $array_characters;
+		private function parseCharacters($characters)
+		{
+			$array_characters = array();
+
+			if (strpos($characters, ',') !== false)
+			{
+				$d = explode(',', $characters);
+
+				if (!array_key_exists($d[1], $array_characters))
+				{
+					$array_characters[$d[1]] = array();			
+				}
+
+				array_push($array_characters[$d[1]], $d[0]);
+			}
+
+			return $array_characters;
+		}
 	}
-}
 
 ?>
