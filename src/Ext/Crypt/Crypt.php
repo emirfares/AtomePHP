@@ -6,6 +6,7 @@ class Crypt
 {
     public static function cryptPassword($pass, $key)
     {
+        
         $chars = explode(' ' ,implode(' ',range('a','z')).' '.implode(' ',range('A','Z')).' '.implode(' ',range('0','9')).' - _');
 
         $l1 = $l2 = $l3 = $l4 = $l5 = 0; 
