@@ -17,11 +17,11 @@ class Config
 			'username' => 'root',
 			'password' => null,
 			'db_server' => 'atome',
-			'db_realm' => 'atome',
+			'db_realm' => 'atome_realm',
 			'db_world' => 'atome',
 		);
 
-		$this->realm_port = 444;
+		$this->realm_port = 443;
 		$this->debug = true;
 		$this->client_version = "1.29.1";
 		$this->enable_subscription = false;
