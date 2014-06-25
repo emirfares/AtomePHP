@@ -1,6 +1,6 @@
 <?php
 	ini_set('date.timezone', 'Europe/Paris');
-	# ram function
+	# memory function
 	function convert($size)
 	{
 		$unit = array('b','kb','mb','gb','tb','pb');
@@ -15,11 +15,11 @@
 	require_once('src/Ext/Bilbon/ORM/bilbon.php');
 	require_once('src/Console/Logs.php');
 
-	# Set up
+	# Setup logs
 	use Console\Logs as Logs;
 
 	Logs::init_logs();
-	Logs::print_log('launch', 'Loading all files...', true);
+	Logs::print_log('launch', 'Loading all files...');
 	# End
 
 	require_once('src/Ext/Crypt/Random.php');
@@ -35,7 +35,7 @@
 	$time = number_format($end_time - $start_time, 3);
 	$end = convert(memory_get_usage() - $start);
 
-	Logs::print_log('launch', "Files loaded ! [{$end}, {$time} s]", true);
+	Logs::print_log('launch', "Files loaded ! [{$end}, {$time} s]");
 
 	require_once('src/RealmServer/Main/Client.php');
 
@@ -46,11 +46,11 @@
 	try 
 	{
 		$server = socket_create_listen($config->realm_port);
-		Logs::print_log('launch', "Server listening clients on port {$config->realm_port}", true);
+		Logs::print_log('launch', "Server listening clients on port {$config->realm_port}");
 	}
 	catch (Exception $e)
 	{
-		Logs::print_log('error', "Can't start listener on port {$config->realm_port}", true);
+		Logs::print_log('error', "Can't start listener on port {$config->realm_port}");
 	}
 	
 	while(($client = socket_accept($server)))
