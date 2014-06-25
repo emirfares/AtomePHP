@@ -1,4 +1,5 @@
 <?php
+	ini_set('date.timezone', 'Europe/Paris');
 	# ram function
 	function convert($size)
 	{
