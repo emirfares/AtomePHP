@@ -4,9 +4,9 @@ namespace Ext\Crypt;
 
 class Random
 {
-	public static function generateStr($size = 8)
+	public static function generateKey($size = 8)
 	{
-		$chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+		$chars = explode(' ' ,implode(' ',range('a','z')).' '.implode(' ',range('A','Z')).' '.implode(' ',range('0','9')).' - _');
 	    $count = mb_strlen($chars);
 
 	    for ($i = 0, $str = ''; $i < $size; $i++) 
