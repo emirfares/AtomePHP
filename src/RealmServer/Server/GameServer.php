@@ -9,7 +9,7 @@
 	class GameServer
 	{
 		public $server_list = array();
-		public $db_realm;
+		public static $db_realm;
 
 		function __construct()
 		{
@@ -21,18 +21,18 @@
 		    	'password' => $config->mysql_informations['password']
 			);
 
-			$this->db_realm = ORM\Storage::get('realm');
+			static::$db_realm = ORM\Storage::get('realm');
 			
 			$this->loadServers();
 		}
 
 		private function loadServers()
 		{
-			$qGameserver = $this->db_realm->query('SELECT * FROM gameservers');
-			$server = new Server($qGameserver->fetch(PDO::FETCH_ASSOC), $this->db_realm);
+			$qGameserver = static::$db_realm->query('SELECT * FROM gameservers');
+			$server = new Server($qGameserver->fetch(PDO::FETCH_ASSOC), static::$db_realm);
 			$server->__set('state', 0);
-
-			$this->server_list[$server->__get('id')] = $server;
+			array_push($this->server_list,$server);
+			//$this->server_list[$server->__get('id')] = $server;
 		}
 
 		public function serverExists($id)
@@ -71,7 +71,6 @@
 				($first) ? $first = false : $packet .= "|";
 				$packet .= $server->__get('id').';'.$server->__get('state').';'.(75 * $server->__get('id')).';1';
 			}
-
 			return $packet;
 		}
 	}
