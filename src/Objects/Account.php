@@ -19,21 +19,21 @@
 
 		private function parseCharacters($characters)
 		{
-			$array_characters = array();
-
-			if (strpos($characters, ',') !== false)
+			$tdata = explode("|",$characters);
+			$char = array();
+			foreach ($tdata as $data)
 			{
-				$d = explode(',', $characters);
-
-				if (!array_key_exists($d[1], $array_characters))
+				if (strpos($data, ',') !== false)
 				{
-					$array_characters[$d[1]] = array();			
+					$d = explode(",", $data);
+					if (!array_key_exists($d[1], $char))
+					{
+						$char[$d[1]] = array();			
+					}
+					array_push($char[$d[1]],$d[0]);
 				}
-
-				array_push($array_characters[$d[1]], $d[0]);
 			}
-
-			return $array_characters;
+			return $char;
 		}
 	}
 
