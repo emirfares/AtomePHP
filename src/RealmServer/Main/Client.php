@@ -7,13 +7,13 @@
 
 	use Console\Logs as Logs;
 	use RealmServer\Realm as Realm;
-	use Worker;
+	use Thread;
 
 	/**	@class		Client
 	 *	@author		Emir Fares BELMAHDI & Jean Walrave
 	 *	@abstract 	Handling new clients & parsing socket connections.
 	 */
-	class Client extends Worker 
+	class Client extends Thread 
 	{
 		/**	@var		dbrealm
 		 *	@abstract	ressource - The client's PDO Connection.
@@ -42,16 +42,17 @@
 		 */
 		public function __construct($socket)
 		{
-			global $config;
+			global $config,$game_servers;
 
 			$this->__set('config', $config);
+			$this->__set('game_servers', $game_servers);
 			$this->__set('socket', $socket);
 			$this->__set('key', Crypt\Random::generateKey());
 			socket_getpeername($this->socket, $ip);
 			$this->__set('ip', $ip);
 			$this->__set('hostname', gethostbyaddr($this->ip));
 
-			$this->start(PTHREADS_INHERIT_ALL | PTHREADS_ALLOW_GLOBALS);
+			$this->start(PTHREADS_INHERIT_ALL);
 		}
 
 	    public function __get($property) 
@@ -90,9 +91,6 @@
 			{
 				$buffer = socket_read($this->socket, 1024);
 					
-				if (empty($buffer))
-					$this->disconnect();
-
 				$buffer = (str_replace(chr(10), null, $buffer));
 
 				for ($i = 0; $i < strlen($buffer); $i++) 
@@ -108,6 +106,8 @@
 				}
 			}
 			while($buffer != null);
+			if (empty($buffer))
+					$this->disconnect();
 		}
 
 		/**  @function	parsePacket
@@ -151,13 +151,11 @@
 		 */
 		private function parseAccount($packet) 
 		{
-			global $game_servers;
-			global $config;
 
 			ORM\Storage::$instances['realm'] = array(
-		    	'dsn' => 'mysql:host='.$config->mysql_informations['host'].';dbname='.$config->mysql_informations['db_realm'],
-		    	'user' => $config->mysql_informations['username'],
-		    	'password' => $config->mysql_informations['password']
+		    	'dsn' => 'mysql:host='.$this->config->mysql_informations['host'].';dbname='.$this->config->mysql_informations['db_realm'],
+		    	'user' => $this->config->mysql_informations['username'],
+		    	'password' => $this->config->mysql_informations['password']
 			);
 
 			self::$db_realm = ORM\Storage::get('realm');
@@ -180,9 +178,9 @@
 
 						$this->send('Ad'.$account->__get('nickname'));
 						$this->send('Ac0'); //TODO : Communities, Default (0) Francophone 
-						$this->send('AH'.$game_servers->parsePacket());
+						$this->send('AH'.$this->game_servers->parsePacket());
 						$this->send(($account->__get('gmlevel') > 0) ? 'Alk1' : 'Alk0');
-						$this->send('AQ');
+						$this->send('AQ'.$account->__get('question'));
 
 						$this->__set('state', 'base');
 						Logs::print_log('debug', "Client {$account->__get('nickname')} connected !");
@@ -214,22 +212,14 @@
 		 */
 		private function sendCharactersList() 
 		{
-			global $game_servers;
 
 			$time = null;
 
-			if ($this->config->enable_subscription)
-			{
-				$time = 0; 
-			}
-			else
-			{
-				$time = (365 * 24 * 3600) * 1000; // TODO : Parse subscription time from the database
-			}
+			($this->config->enable_subscription) ? $time = 0 : $time = (365 * 24 * 3600) * 1000; // TODO : Parse subscription time from the database
 
 			$packet = 'AxK'.$time;
 
-			foreach ($game_servers->server_list as $server)
+			foreach ($this->game_servers->server_list as $server)
 			{
 				if (array_key_exists($server->__get('id'), $this->account['characters']))
 				{
@@ -304,8 +294,8 @@
 		public function disconnect()
 		{
 			socket_close($this->socket);
-			//print_info('Client disconnected');
-			$this->shutdown();
+			Logs::print_log('debug','Client disconnected');
+			$this->kill();
 		}
 	}
 ?>
