@@ -1,4 +1,5 @@
 <?php
+	define('DEBUG', true);
 	ini_set('date.timezone', 'Europe/Paris');
 	# memory function
 	function convert($size)
@@ -15,7 +16,7 @@
 	require_once('src/Ext/Bilbon/ORM/bilbon.php');
 	require_once('src/Console/Logs.php');
 
-	# Setup logs
+	# Setup Logs
 	use Console\Logs as Logs;
 
 	Logs::init_logs();
