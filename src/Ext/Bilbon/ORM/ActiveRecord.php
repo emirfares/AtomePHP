@@ -7,7 +7,7 @@ use PDO;
 class ActiveRecord 
 {
     protected $_data = array();
-    protected $em;
+    public static $em;
 
     public static $table;
     public static $storage = 'default';
@@ -18,7 +18,7 @@ class ActiveRecord
         if ($data)
             $this->_data = $data;
         if ($em)
-            $this->em = $em;
+            static::$em = $em;
     }
     
     public static function getTable() 
@@ -43,7 +43,7 @@ class ActiveRecord
     
     public function update() 
     {
-        $storage = $this->em == null ? Storage::get(static::$storage) : $this->em;
+        $storage = static::$em == null ? Storage::get(static::$storage) : static::$em;
         $replace = array(
             '{table}' => static::getTable(),
             '{primary}' => static::$primary,
