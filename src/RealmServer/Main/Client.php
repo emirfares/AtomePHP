@@ -257,6 +257,9 @@
 		 */
 		private function parseGameServer($id)
 		{
+			$serv = $this->game_servers->getServ($id);
+			$token = Crypt\Random::generateKey(8);
+			$this->send('AYK'.$serv->ip.':'.$serv->port.';'.$token); //TODO : Crypt IP
 
 		}
 
