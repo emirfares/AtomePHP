@@ -38,7 +38,7 @@
 		/**	@function	__construct
 		 *	@abstract	Launches the Thread and start parsing packets.
 		 *	@param		ressource - Socket ressource used to communicate with the client.
-		 *	@result		void
+		 *	@return		void
 		 */
 		public function __construct($socket)
 		{
@@ -68,7 +68,7 @@
 	    /**	@function	send
 		 *	@abstract	Sends a packet to the client.
 		 *	@param		string - Packet to send.
-		 *	@result		void
+		 *	@return		void
 		 */
 		public function send($buffer)
 		{
@@ -78,7 +78,7 @@
 
 		/**	@function	run
 		 *	@abstract	Used by pThreads to run the new thread.
-		 *	@result		void
+		 *	@return		void
 		 */
 		public function run()
 		{
@@ -113,7 +113,7 @@
 		/**  @function	parsePacket
 		 *	@abstract	Parses the packet receved from the client.
 		 *	@param		string - Packet receved.
-		 *	@result		void
+		 *	@return		void
 		 */
 		private function parsePacket($packet)
 		{
@@ -147,7 +147,7 @@
 		/**	@function	parseAccount
 		 *	@abstract	Parses the account informations packet receved from the client.
 		 *	@param		string - Packet receved.
-		 *	@result		void
+		 *	@return		void
 		 */
 		private function parseAccount($packet) 
 		{
@@ -208,7 +208,7 @@
 		/**	@function	sendCharactersList
 		 *	@abstract	Sends remaining subscription time and the list of client's characters.
 		 *	@param		string - Packet receved.
-		 *	@result		void
+		 *	@return		void
 		 */
 		private function sendCharactersList() 
 		{
@@ -233,7 +233,7 @@
 		/**	@function	parseCommand
 		 *	@abstract	Parses admin commands sent using the game admin console.
 		 *	@param		string - Packet receved.
-		 *	@result		void
+		 *	@return		void
 		 */
 		private function parseCommand($packet)
 		{
@@ -253,7 +253,7 @@
 		/**	@function	parseGameServer
 		 *	@abstract	Parses game server redirection request.
 		 *	@param		integer - server ID.
-		 *	@result		void
+		 *	@return		void
 		 */
 		private function parseGameServer($id)
 		{
@@ -266,7 +266,7 @@
 		/**	@function	parseBase
 		 *	@abstract	Parses Base packets  (Packets sent after successful login).
 		 *	@param		string - Packet receved.
-		 *	@result		void
+		 *	@return		void
 		 */
 		private function parseBase($packet)
 		{
@@ -292,7 +292,7 @@
 
 		/**	@function	disconnect
 		 *	@abstract	Disconnects the client.
-		 *	@result		void
+		 *	@return		void
 		 */
 		public function disconnect()
 		{

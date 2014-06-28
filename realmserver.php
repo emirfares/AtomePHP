@@ -1,6 +1,7 @@
 <?php
 	define('DEBUG', true);
 	ini_set('date.timezone', 'Europe/Paris');
+	
 	# memory function
 	function convert($size)
 	{
@@ -53,7 +54,7 @@
 	{
 		Logs::print_log('error', "Can't start listener on port {$config->realm_port}");
 	}
-	
+		
 	while(($client = socket_accept($server)))
 	{
 		$clients[] = new Client($client);

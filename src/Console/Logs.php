@@ -2,7 +2,7 @@
 	namespace Console;
 
 	/**	@class		Logs
-	 *	@author		Jean Walrave
+	 *	@author		Jean Walrave 
 	 *	@abstract 	Handling log files & console printing.
 	 */
 	class Logs
