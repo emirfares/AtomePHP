@@ -9,5 +9,6 @@ FR:
 CHANGELOG :
 
 Version `0.0.1`
-	- [Realm] Multithreaded server
-	- [Realm] Login/Disconnection
+
+- [Realm] Multithreaded server
+- [Realm] Login/Disconnection
