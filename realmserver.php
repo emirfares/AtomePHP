@@ -1,6 +1,9 @@
 <?php
-	define('DEBUG', true);
-	ini_set('date.timezone', 'Europe/Paris');
+
+	# Require all files
+	require_once('src/RealmServer/config.php');
+	require_once('src/Ext/Bilbon/ORM/bilbon.php');
+	require_once('src/Console/Logs.php');
 	
 	# memory function
 	function convert($size)
@@ -12,10 +15,8 @@
 	$start = memory_get_usage();
 	$start_time = microtime(true);
 
-	# Require all files
-	require_once('src/RealmServer/config.php');
-	require_once('src/Ext/Bilbon/ORM/bilbon.php');
-	require_once('src/Console/Logs.php');
+	
+	
 
 	# Setup Logs
 	use Console\Logs as Logs;
@@ -47,12 +48,12 @@
 	
 	try 
 	{
-		$server = socket_create_listen($config->realm_port);
-		Logs::print_log('launch', "Server listening clients on port {$config->realm_port}");
+		$server = socket_create_listen(REALM_PORT);
+		Logs::print_log('launch', "Server listening clients on port ".REALM_PORT);
 	}
 	catch (Exception $e)
 	{
-		Logs::print_log('error', "Can't start listener on port {$config->realm_port}");
+		Logs::print_log('error', "Can't start listener on port ".REALM_PORT);
 	}
 		
 	while(($client = socket_accept($server)))
