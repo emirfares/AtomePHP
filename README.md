@@ -7,6 +7,9 @@ FR:
 `AtomePHP` est un émulateur DOFUS 1.29.1 entièrement écrit en PHP, totalement développé par l'équipe, from scratch (n'est basé sur aucun autre émulateur), le but d'AtomePHP est d'ouvrir une voie aux développeurs WEB et de leurs donner la possibilité de s'orienter et s'approfondir dans le monde de l'émulation sans avoir a changer leurs langage favoris
 
 CHANGELOG :
+
 [*] Version `0.0.1`
+
 	[*][*] [Realm] Multithreaded server
+
 	[*][*] [Realm] Login/Disconnection
