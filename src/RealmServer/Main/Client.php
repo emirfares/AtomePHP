@@ -42,9 +42,8 @@
 		 */
 		public function __construct($socket)
 		{
-			global $config,$game_servers;
+			global $game_servers;
 
-			$this->__set('config', $config);
 			$this->__set('game_servers', $game_servers);
 			$this->__set('socket', $socket);
 			$this->__set('key', Crypt\Random::generateKey());
@@ -83,7 +82,7 @@
 		public function run()
 		{
 			$this->__set('state', 'version_checking');
-			Logs::print_log('debug', "New client added ({$this->key}), version checking...", false);
+			Logs::print_log('debug', "New client added ({$this->key}), checking version...", false);
 			$this->send('HC'.$this->key);
 			$buff = null;
 
@@ -99,7 +98,7 @@
 				 		$buff .= $buffer[$i];
 				    else
 				    {
-				    	Logs::print_log('debug', "Receved <- {$buff}", false);
+				    	Logs::print_log('debug', "Recv <- {$buff}", false);
 				    	$this->parsePacket(trim($buff));
 				    	$buff = null;
 				    }  	
@@ -120,14 +119,14 @@
 			switch($this->__get('state'))
 			{
 				case 'version_checking' :
-					if ($packet == $this->config->client_version) 
+					if ($packet == CLIENT_VERSION) 
 					{
 						$this->__set('state', 'account_checking');
 						Logs::print_log('debug', 'Version validated, account verification...', false);
 					}
 					else 
 					{
-						$this->send('AlEv'.$this->config->client_version);
+						$this->send('AlEv'.CLIENT_VERSION);
 						Logs::print_log('debug', "Wrong version ({$packet}) form client {$this->key} {$this->ip}");
 						$this->__set('state', null);
 						$this->disconnect();
@@ -153,9 +152,9 @@
 		{
 
 			ORM\Storage::$instances['realm'] = array(
-		    	'dsn' => 'mysql:host='.$this->config->mysql_informations['host'].';dbname='.$this->config->mysql_informations['db_realm'],
-		    	'user' => $this->config->mysql_informations['username'],
-		    	'password' => $this->config->mysql_informations['password']
+		    	'dsn' => 'mysql:host='.MYSQL_HOST.';dbname='.DB_REALM,
+		    	'user' => MYSQL_USERNAME,
+		    	'password' => MYSQL_PASSWORD
 			);
 
 			self::$db_realm = ORM\Storage::get('realm');
@@ -183,6 +182,7 @@
 						$this->send('AQ'.$account->__get('question'));
 
 						$this->__set('state', 'base');
+						//TODO : Disconnect other players from this account.
 						Logs::print_log('debug', "Client {$account->__get('nickname')} connected !");
 					}
 					else
@@ -215,7 +215,7 @@
 
 			$time = null;
 
-			($this->config->enable_subscription) ? $time = 0 : $time = (365 * 24 * 3600) * 1000; // TODO : Parse subscription time from the database
+			(ENABLE_SUBSCRIPTION) ? $time = 0 : $time = (365 * 24 * 3600) * 1000; // TODO : Parse subscription time from the database
 
 			$packet = 'AxK'.$time;
 
@@ -260,6 +260,7 @@
 			$serv = $this->game_servers->getServ($id);
 			$token = Crypt\Random::generateKey(8);
 			$this->send('AYK'.$serv->ip.':'.$serv->port.';'.$token); //TODO : Crypt IP
+			//TODO : Sent "token" & "client informations" to the GameServer
 
 		}
 
