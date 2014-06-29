@@ -13,5 +13,5 @@
 	define('ENABLE_SUBSCRIPTION', false);
 	define('MAX_PLAYERS', 200);
 
-	ini_set('date.timezone', 'Europe/Paris');
+	ini_set('date.timezone', 'Africa/Algiers');
 ?>
