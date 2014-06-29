@@ -13,12 +13,11 @@
 
 		function __construct()
 		{
-			global $config;
 
 			ORM\Storage::$instances['realm'] = array(
-		    	'dsn' => 'mysql:host='.$config->mysql_informations['host'].';dbname='.$config->mysql_informations['db_realm'],
-		    	'user' => $config->mysql_informations['username'],
-		    	'password' => $config->mysql_informations['password']
+		    	'dsn' => 'mysql:host='.MYSQL_HOST.';dbname='.DB_REALM,
+		    	'user' => MYSQL_USERNAME,
+		    	'password' => MYSQL_PASSWORD
 			);
 
 			static::$db_realm = ORM\Storage::get('realm');
