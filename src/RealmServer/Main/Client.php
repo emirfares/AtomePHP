@@ -46,7 +46,7 @@
 
 			$this->__set('game_servers', $game_servers);
 			$this->__set('socket', $socket);
-			$this->__set('key', Crypt\Random::generateKey());
+			$this->__set('key', Crypt\Random::generateKey(32));
 			socket_getpeername($this->socket, $ip);
 			$this->__set('ip', $ip);
 			$this->__set('hostname', gethostbyaddr($this->ip));
@@ -205,9 +205,19 @@
 			}
 		}
 
+		
+		/**	@function	getSubscriptionTimeLeft
+		 *	@abstract	returns remaining subscription time/
+		 *	@return		long int - time left in milliseconde
+		 */
+		private function getSubscriptionTimeLeft ()
+		{
+			$timeLeft = (strtotime($this->account['subscriptionDate']) - strtotime(date('Y-m-d H:i:s')) );
+			return ($timeLeft > 0) ? $timeLeft * 1000 : 0; 
+		}
+
 		/**	@function	sendCharactersList
 		 *	@abstract	Sends remaining subscription time and the list of client's characters.
-		 *	@param		string - Packet receved.
 		 *	@return		void
 		 */
 		private function sendCharactersList() 
@@ -215,7 +225,7 @@
 
 			$time = null;
 
-			(ENABLE_SUBSCRIPTION) ? $time = 0 : $time = (365 * 24 * 3600) * 1000; // TODO : Parse subscription time from the database
+			(ENABLE_SUBSCRIPTION) ? $time = $this->getSubscriptionTimeLeft() : $time = 31536000000; //31536000000 = one year
 
 			$packet = 'AxK'.$time;
 
